@@ -53,13 +53,6 @@ def explode_icns():
     print("Exploding .icns")
     subprocess.run(['iconutil', '-c', 'iconset', 'GenericFolderIcon.icns'])
 
-def implode_icns(iconset: Path):
-    subprocess.run([
-        'iconutil',
-        '-c', 'icns',
-        str(iconset)
-    ])
-
 def generate(name: str, colour: str):
     print(f"Generating {name}.icns")
     # Create .iconset directory
@@ -69,18 +62,28 @@ def generate(name: str, colour: str):
     source_dir = Path("GenericFolderIcon.iconset")
     # Convert each .png
     for png_file in source_dir.glob("*.png"):
-        subprocess.run([
-            'magick',
-            str(png_file),
-            '-modulate', '100,0,100',
-            '-fill', colour,
-            '-colorize', '70',
-            str(iconset_dir / png_file.name)
-        ])
+        convert(png_file, iconset_dir / png_file.name, colour)
     # Implode the .iconset directory into an .icns file
     implode_icns(iconset_dir)
     # Delete the .iconset directory
     shutil.rmtree(Path("output") / dirname)
+
+def convert(input: Path, output: Path, colour: str):
+    subprocess.run([
+        'magick',
+        str(input),
+        '-modulate', '100,0,100',
+        '-fill', colour,
+        '-colorize', '70',
+        str(output)
+    ])
+
+def implode_icns(iconset: Path):
+    subprocess.run([
+        'iconutil',
+        '-c', 'icns',
+        str(iconset)
+    ])
 
 if __name__ == "__main__":
     main()
