@@ -10,6 +10,10 @@ Running `python3 generate.py` will create an `output` directory of `.icns` files
 
 The default colour palette is from [Tailwind][tw], you can change it in `generate.py`.
 
+## Output
+
+![](screenshot.png)
+
 ## License
 
 Copyright (c) 2025 [Fernando Borretti](https://borretti.me/)
